@@ -1,0 +1,60 @@
+#For this project, I downloaded Spotify data from Kaggle and performed analytics on the data using SQLite. 
+
+#1. What are the ages of the users? Include the User ID and their age.
+SELECT A. UserID
+, A. AnswerText
+FROM mental_health.Answer A
+JOIN mental_health.Question Q
+ON A.QuestionID = Q.questionid
+WHERE questiontext = 'What is your age?'
+GROUP BY A.UserID;
+
+#2. How many users were female?
+SELECT SUM(QuestionID) as Female
+FROM mental_health.Answer
+WHERE AnswerText = 'female';
+
+#3. How many users were male?
+SELECT SUM(QuestionID) as Female
+FROM mental_health.Answer
+WHERE AnswerText = 'male';
+
+#4. What country has the most users?
+SELECT COUNT(AnswerText) as Number
+, AnswerText
+FROM mental_health.answer
+WHERE QuestionID = 3
+GROUP BY AnswerText
+ORDER BY Number desc
+LIMIT 1;
+
+#5. How many questions were on the survey?
+SELECT COUNT(questiontext)
+FROM mental_health.Question;
+
+#6. What is the youngest age of the users? What is the oldest?
+SELECT MAX(AnswerText) as Oldest
+, MIN(AnswerText) as Youngest
+FROM mental_health.Answer
+WHERE questionid = 1;
+
+#7. How many users currently have sought help for a mental health disorder?
+SELECT AnswerText
+FROM mental_health.Answer
+WHERE QuestionID = 7
+AND AnswerText like '1';
+
+#8. Show all the Questions and Answers for User 1.
+SELECT A.UserID
+, Q.questiontext
+, A.AnswerText
+FROM mental_health.Answer as A
+LEFT JOIN mental_health.Question as Q
+ON A.QuestionID = Q.questionid
+WHERE A.UserID = 1;
+
+#9. How many users lived in the United States?
+SELECT COUNT(AnswerText)
+FROM mental_health.Answer
+WHERE questionid = 3
+AND AnswerText like 'United States';
